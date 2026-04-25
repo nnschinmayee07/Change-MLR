@@ -255,6 +255,19 @@
     .honour-table .honour-name { font-family: 'Raleway', sans-serif; font-weight: 700; color: #0B0F1A; }
     .honour-table .honour-badge { display: inline-block; font-family: 'Raleway', sans-serif; font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 10px; letter-spacing: 0.04em; }
     .honour-badge--topper { background: rgba(232,93,31,0.12); color: #E85D1F; }
+    /* Committee table */
+    .committee-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; max-width: 900px; }
+    .committee-table th { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #888; text-align: left; padding: 12px 16px; border-bottom: 2px solid rgba(0,0,0,0.08); }
+    .committee-table td { font-size: 0.88rem; color: #333; padding: 14px 16px; background: #fff; }
+    .committee-table td:first-child { border-radius: 8px 0 0 8px; border-left: 3px solid transparent; }
+    .committee-table tbody tr:hover td:first-child { border-left: 3px solid #E85D1F; }
+    .committee-table tbody tr:hover td { background: rgba(232,93,31,0.04); }
+    .committee-table td:last-child { border-radius: 0 8px 8px 0; }
+    .committee-badge { display: inline-block; font-family: 'Raleway', sans-serif; font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 10px; letter-spacing: 0.04em; }
+    .badge--chairman { background: rgba(24,69,59,0.12); color: #18453B; }
+    .badge--convener { background: rgba(232,93,31,0.12); color: #E85D1F; }
+    .badge--industry { background: rgba(11,15,26,0.08); color: #0B0F1A; }
+    .badge--academic { background: rgba(24,69,59,0.06); color: #18453B; }
     .honour-badge--rank { background: rgba(24,69,59,0.1); color: #18453B; }
     .honour-table .honour-score { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; color: #18453B; }
     .achieve-list { list-style: none; padding: 0; max-width: 700px; }
@@ -392,6 +405,7 @@
     <a class="dept-tab" data-tab="faculty">Faculty Profiles</a>
     <a class="dept-tab" data-tab="academics">Academics</a>
     <a class="dept-tab" data-tab="achievements">Achievements</a>
+    <a class="dept-tab" data-tab="committees">Committees</a>
   </nav>
 <div class="streak" id="navStreak"></div>
   <!-- TAB 1: Overview -->
@@ -418,13 +432,15 @@
     <a class="ds-item" data-ds-tab="achievements" data-ds-target="honour-section"><span class="ds-item__dot"></span><span class="ds-item__label">Roll of Honour</span></a>
     <a class="ds-item" data-ds-tab="achievements" data-ds-target="pub-section"><span class="ds-item__dot"></span><span class="ds-item__label">Publications</span></a>
     <a class="ds-item" data-ds-tab="achievements" data-ds-target="intern-section"><span class="ds-item__dot"></span><span class="ds-item__label">Internships</span></a>
+    <a class="ds-item" data-ds-tab="committees" data-ds-target="pac-section"><span class="ds-item__dot"></span><span class="ds-item__label">PAC</span></a>
+    <a class="ds-item" data-ds-tab="committees" data-ds-target="dac-section"><span class="ds-item__dot"></span><span class="ds-item__label">DAC</span></a>
   </aside>
 
   <div class="dept-body__panels">
   <div class="dept-panel is-active" id="panel-overview">
     <h2 id="about-dept" class="panel-heading">About the Department</h2>
 <div id="hod-msg" class="hod-msg">
-      <div class="hod-msg__photo"><img src="images/ece/svs-prasad.jpg" alt="Dr. S V S Prasad" /></div>
+      <div class="hod-msg__photo"><img src="https://mlrit.ac.in/wp-content/uploads/2022/02/ece-fct-1.jpg" alt="Dr. S V S Prasad" /></div>
       <div class="hod-msg__content">
         <div class="hod-msg__label">From the HOD's Desk</div>
         <p class="hod-msg__text">"The ECE Department has been at the forefront of innovation since 2005. With NBA accreditation and active memberships in IETE, IEEE, and IUCEE, we provide an ecosystem where students thrive in VLSI design, signal processing, IoT, and wireless communications. Our Centres of Excellence in Cadence, MATLAB, and LabVIEW ensure industry-ready training."</p>
@@ -434,8 +450,13 @@
     <p>The ECE Department was established in 2005 with an initial intake of 60 students. Following autonomous status in 2015, the department now offers B.Tech with 120 intake and M.Tech in Embedded Systems. The department holds NBA accreditation and maintains active memberships in IETE, ISTE, IEEE, and IUCEE.</p>
     <div class="panel-sub" id="vm-section">Vision and Mission</div>
     <div class="two-col">
-      <div class="card card--accent"><h3>Vision</h3><p>To provide quality technical education with innovation and importance to R and D, fulfilling societal needs while achieving academic excellence in preparing globally competent engineers.</p></div>
-      <div class="card card--accent"><h3>Mission</h3><p>Adopt innovative student-centric learning approaches, foster research-oriented perspectives, enable national and international competitive capabilities, and strengthen core competencies through experiential curriculum.</p></div>
+      <div class="card card--accent"><h3>Vision</h3><p>Provide quality technical education with innovation and importance to R&amp;D, thereby fulfilling the needs of the society, and to achieve Academic Excellence in Electronics and Communication Engineering for Global Competent Engineers.</p></div>
+      <div class="card card--accent"><h3>Mission</h3>
+        <p><strong>M1.</strong> To adopt innovative student-centric learning methods.</p>
+        <p><strong>M2.</strong> To develop an orientation towards futuristic view by research.</p>
+        <p><strong>M3.</strong> To enable them to compete in national and international levels.</p>
+        <p><strong>M4.</strong> Strengthen core competencies among the learners through an experiential curriculum.</p>
+      </div>
     </div>
     <div class="panel-sub"id="teaching-method">Innovative Teaching Methodology</div>
     <p>The department follows active learning pedagogy integrating project-based learning, flipped classrooms, and industry-mentored sessions. Regular guest lectures from industry professionals complement the curriculum.</p>
@@ -463,8 +484,6 @@
       </div>
     </div>
     </div>
-  </div>
-
 
   <!-- TAB 2: Objectives -->
   <div class="dept-panel" id="panel-objectives">
@@ -485,17 +504,14 @@
     <div class="panel-sub"id="handbook-section">Handbook</div>
     <div class="card" style="max-width:500px;"><h3>ECE Department Handbook</h3><p>Department of Electronics and Communication Engineering — Academic Year 2025-26</p></div>
     </div>
-    </div>
-  </div>
 
-  
   <!-- TAB 3: Faculty -->
   <div class="dept-panel" id="panel-faculty">
     <h2 class="panel-heading">Faculty Profiles</h2>
 <p>Hover for details. Click "View Research" for full profile.</p>
     <div id="faculty-grid-section" class="fcard-grid">
           <div class="fcard" data-author="S V S Prasad" style="position:relative;">
-              <img src="images/ece/svs-prasad.jpg" alt="Dr. S V S Prasad" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/02/ece-fct-1.jpg" alt="Dr. S V S Prasad" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">SP</div>
               <div style="position:absolute;top:10px;left:10px;z-index:6;font-family:'Raleway',sans-serif;font-size:0.6rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:#18453B;padding:3px 8px;border-radius:4px;">HOD</div>
               <div class="fcard__overlay">
@@ -510,7 +526,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Shrikant Upadhyay">
-              <img src="images/ece/shrikant-upadhyay.jpg" alt="Dr. Shrikant Upadhyay" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/Photo-Dr.-Shrikant-Upadhyay-e1713764880720.jpg" alt="Dr. Shrikant Upadhyay" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">SU</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. Shrikant Upadhyay</div>
@@ -524,7 +540,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Kiran Chand Ravi">
-              <img src="images/ece/kiran-chand.jpeg" alt="Dr. Kiran Chand Ravi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2023/07/R-K-Photo_feb2023-kiran-chand-Ravi-chandu.jpeg" alt="Dr. Kiran Chand Ravi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">KR</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. Kiran Chand Ravi</div>
@@ -538,7 +554,7 @@
               </div>
           </div>
           <div class="fcard" data-author="G. Karthik Reddy">
-              <img src="images/ece/karthik-reddy.jpg" alt="Dr. G. Karthik Reddy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2023/06/DSC_0117-KARTHIK-G.jpg" alt="Dr. G. Karthik Reddy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">GR</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. G. Karthik Reddy</div>
@@ -552,7 +568,7 @@
               </div>
           </div>
           <div class="fcard" data-author="T. Vijetha">
-              <img src="images/ece/t-vijetha.jpg" alt="Dr. T. Vijetha" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/p6-1-VIJETHA-TUMMALA.jpg" alt="Dr. T. Vijetha" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">TV</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. T. Vijetha</div>
@@ -566,7 +582,7 @@
               </div>
           </div>
           <div class="fcard" data-author="P. Yakaiah">
-              <img src="images/ece/p-yakaiah.jpg" alt="Dr. P. Yakaiah" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/Yakaiah.jpg" alt="Dr. P. Yakaiah" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">PY</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. P. Yakaiah</div>
@@ -580,7 +596,7 @@
               </div>
           </div>
           <div class="fcard" data-author="K. Nishanth Rao">
-              <img src="images/ece/k-nishanth-rao.jpg" alt="Dr. K. Nishanth Rao" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/nishanth.jpg" alt="Dr. K. Nishanth Rao" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">KR</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. K. Nishanth Rao</div>
@@ -594,7 +610,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Rudraram Divya">
-              <img src="images/ece/rudraram-divya.jpg" alt="Rudraram Divya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2026/04/Screenshot_20260402_172832-Divya-Reddy.jpg" alt="Rudraram Divya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">RD</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Rudraram Divya</div>
@@ -608,7 +624,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Pullela Sravani">
-              <img src="images/ece/pullela-sravani.jpg" alt="Pullela Sravani" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2026/04/P-Sravani.jpg" alt="Pullela Sravani" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">PS</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Pullela Sravani</div>
@@ -622,7 +638,7 @@
               </div>
           </div>
           <div class="fcard" data-author="M. Nagendra Babu">
-              <img src="images/ece/nagendra-babu.jpg" alt="M. Nagendra Babu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2026/04/nag-Manchikatla.jpg" alt="M. Nagendra Babu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">MB</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">M. Nagendra Babu</div>
@@ -636,7 +652,7 @@
               </div>
           </div>
           <div class="fcard" data-author="G. Venkata Subba Reddy">
-              <img src="images/ece/gv-subba-reddy.jpg" alt="G. Venkata Subba Reddy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2026/04/G-V-Subba-Reddy.jpg" alt="G. Venkata Subba Reddy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">GR</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">G. Venkata Subba Reddy</div>
@@ -650,7 +666,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Akhila Akula">
-              <img src="images/ece/akhila-akula.jpg" alt="Akhila Akula" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2026/04/akhila-akula.jpg" alt="Akhila Akula" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">AA</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Akhila Akula</div>
@@ -664,7 +680,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Mary Kannidi">
-              <img src="images/ece/mary-kannidi.jpeg" alt="Ms. Mary Kannidi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/IMG_1030-Mary-kannidi.jpeg" alt="Ms. Mary Kannidi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">MK</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Ms. Mary Kannidi</div>
@@ -678,7 +694,7 @@
               </div>
           </div>
           <div class="fcard" data-author="S. Naveen Kumar">
-              <img src="images/ece/s-naveen-kumar.jpg" alt="Mr. S. Naveen Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/naaveen-Naveen-Kumar-Sarva.jpg" alt="Mr. S. Naveen Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">SK</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. S. Naveen Kumar</div>
@@ -692,7 +708,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Khobragade Pithamber">
-              <img src="images/ece/khobragade-pithamber.jpg" alt="Mr. Khobragade Pithamber" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/kpr-PITHAMBER-KHOBRAGADE.jpg" alt="Mr. Khobragade Pithamber" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">KP</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. Khobragade Pithamber</div>
@@ -706,7 +722,7 @@
               </div>
           </div>
           <div class="fcard" data-author="K. Purushotham">
-              <img src="images/ece/k-purushotham.jpg" alt="Mr. K. Purushotham" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/photo-Purushotham-Kashaveni.jpg" alt="Mr. K. Purushotham" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">KP</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. K. Purushotham</div>
@@ -720,7 +736,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Y. Sivaramakrishna">
-              <img src="images/ece/y-sivaramakrishna.jpg" alt="Dr. Y. Sivaramakrishna" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/20PHD7163-1.jpg" alt="Dr. Y. Sivaramakrishna" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">YS</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. Y. Sivaramakrishna</div>
@@ -734,7 +750,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Ganesh Miriyala">
-              <img src="images/ece/ganesh-miriyala.jpg" alt="Dr. Ganesh Miriyala" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/Ganesh_Photo-Ganesh-Miriyala.jpg" alt="Dr. Ganesh Miriyala" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">GM</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. Ganesh Miriyala</div>
@@ -748,7 +764,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Velpula Vijaya Kumar">
-              <img src="images/ece/velpula-vijaya-kumar.jpg" alt="Dr. Velpula Vijaya Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/Pass-photo-VELPULA-VIJAYA-KUMAR.jpg" alt="Dr. Velpula Vijaya Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">VK</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. Velpula Vijaya Kumar</div>
@@ -762,7 +778,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Pinnamaraju Sahitya">
-              <img src="images/ece/sahitya.jpg" alt="Mrs. Pinnamaraju Sahitya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2023/07/IMG-20230628-WA0000-Sahitya-Bhupathiraju.jpg" alt="Mrs. Pinnamaraju Sahitya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">PS</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mrs. Pinnamaraju Sahitya</div>
@@ -776,7 +792,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Ladi Sandip Kumar Patra">
-              <img src="images/ece/sandip-kumar.jpg" alt="Mr. Ladi Sandip Kumar Patra" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2023/07/50872-sandip-kumar.jpg" alt="Mr. Ladi Sandip Kumar Patra" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">LP</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. Ladi Sandip Kumar Patra</div>
@@ -790,7 +806,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Vadla Arun Kumar">
-              <img src="images/ece/vadla-arun-kumar.jpg" alt="Mr. Vadla Arun Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2023/07/DSC_0628-copy-1-Ar-uN.jpg" alt="Mr. Vadla Arun Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">VK</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. Vadla Arun Kumar</div>
@@ -804,7 +820,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Manoj Kumar">
-              <img src="images/ece/manoj-kumar.jpg" alt="Dr. Manoj Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2023/07/manoj-MANOJ-KUMAR.jpg" alt="Dr. Manoj Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">MK</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Dr. Manoj Kumar</div>
@@ -846,7 +862,7 @@
               </div>
           </div>
           <div class="fcard" data-author="B. Kiran Kumar">
-              <img src="images/ece/b-kiran-kumar.jpg" alt="Mr. B. Kiran Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2023/06/20230211_111702-kiran-kumar.jpg" alt="Mr. B. Kiran Kumar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">BK</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. B. Kiran Kumar</div>
@@ -874,7 +890,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Geetha Yerramsetti">
-              <img src="images/ece/geetha-yerramsetti.jpg" alt="Mrs. Geetha Yerramsetti" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/geetha.jpg" alt="Mrs. Geetha Yerramsetti" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">GY</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mrs. Geetha Yerramsetti</div>
@@ -888,7 +904,7 @@
               </div>
           </div>
           <div class="fcard" data-author="M. Raju Naik">
-              <img src="images/ece/m-raju-naik.jpg" alt="Mr. M. Raju Naik" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/raju.jpg" alt="Mr. M. Raju Naik" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">MN</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. M. Raju Naik</div>
@@ -902,7 +918,7 @@
               </div>
           </div>
           <div class="fcard" data-author="K. Maniraj">
-              <img src="images/ece/k-maniraj.jpg" alt="Mr. K. Maniraj" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/maniraj.jpg" alt="Mr. K. Maniraj" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">KM</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. K. Maniraj</div>
@@ -916,7 +932,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Sudhakar Ajmera">
-              <img src="images/ece/sudhakar-ajmera.jpg" alt="Mr. Sudhakar Ajmera" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/sudhakar.jpg" alt="Mr. Sudhakar Ajmera" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">SA</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. Sudhakar Ajmera</div>
@@ -958,7 +974,7 @@
               </div>
           </div>
           <div class="fcard" data-author="Rayala Sateesh">
-              <img src="images/ece/rayala-sateesh.jpg" alt="Mr. Rayala Sateesh" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/sathish.jpg" alt="Mr. Rayala Sateesh" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">RS</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mr. Rayala Sateesh</div>
@@ -972,7 +988,7 @@
               </div>
           </div>
           <div class="fcard" data-author="S. Monika">
-              <img src="images/ece/s-monika.jpg" alt="Mrs. S. Monika" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+              <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/1.jpg" alt="Mrs. S. Monika" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
               <div class="fcard__ini" style="display:none">SM</div>
               <div class="fcard__overlay">
                 <div class="fcard__name">Mrs. S. Monika</div>
@@ -1001,10 +1017,7 @@
           </div>
     </div>
     </div>
-    </div>
-  </div>
 
-  
   <!-- TAB 4: Academics -->
   <div class="dept-panel" id="panel-academics">
     <h2 class="panel-heading">Academics</h2>
@@ -1256,6 +1269,69 @@
         </div>
 
         <p class="intern-note">Internship opportunities are facilitated through the Training and Placement Cell in collaboration with the ECE department.</p>
+  </div>
+
+  <!-- ═══ TAB 6: Committees ═══ -->
+  <div class="dept-panel" id="panel-committees">
+    <h2 class="panel-heading" id="pac-section">Programme Assessment Committee (PAC)</h2>
+    <p>The Programme Assessment Committee (PAC), also known as the Departmental Academic Committee, is responsible for the smooth functioning and continuous monitoring of all academic activities within the department.</p>
+
+    <div class="panel-sub">Composition</div>
+    <div style="overflow-x:auto;">
+      <table class="committee-table">
+        <thead><tr><th>S.No</th><th>Name &amp; Details</th><th>Designation at MLRIT</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Dr. S V S Prasad</strong><br><span style="font-size:0.78rem;color:#888;">Professor &amp; HOD, ECE — MLRIT</span></td><td>Professor &amp; HOD, ECE</td><td><span class="committee-badge badge--chairman">Chairman / Convener</span></td></tr>
+          <tr><td>2</td><td><strong>Dr. Y Siva Rama Krishna</strong><br><span style="font-size:0.78rem;color:#888;">Assistant Professor, ECE — MLRIT</span></td><td>Assistant Professor, ECE</td><td><span class="committee-badge badge--academic">Member</span></td></tr>
+          <tr><td>3</td><td><strong>Dr. V Vijay Kumar</strong><br><span style="font-size:0.78rem;color:#888;">Assistant Professor, ECE — MLRIT</span></td><td>Assistant Professor, ECE</td><td><span class="committee-badge badge--academic">Member</span></td></tr>
+          <tr><td>4</td><td><strong>Dr. T. Vijetha</strong><br><span style="font-size:0.78rem;color:#888;">Assistant Professor, ECE — MLRIT</span></td><td>Assistant Professor, ECE</td><td><span class="committee-badge badge--academic">Member</span></td></tr>
+          <tr><td>5</td><td><strong>Mrs. S. Monika</strong><br><span style="font-size:0.78rem;color:#888;">Assistant Professor, ECE — MLRIT</span></td><td>Assistant Professor, ECE</td><td><span class="committee-badge badge--academic">Member</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel-sub">PAC Responsibilities</div>
+    <ul class="achieve-list" style="max-width:780px;">
+      <li>Decides the course structure and detailed syllabus for all programmes.</li>
+      <li>Recommends value-added courses, professional electives, open electives, mandatory courses, and MOOC courses.</li>
+      <li>Assigns teaching duties to faculty members and ensures required facilities for quality teaching.</li>
+      <li>Allocates faculty mentors to newly admitted students.</li>
+      <li>Reviews cases of slow / weak learners and initiates corrective measures in coordination with mentors.</li>
+      <li>Continuously monitors student performance and suggests remedial actions.</li>
+      <li>Guides faculty members in implementing continuous evaluation methods.</li>
+      <li>Ensures discipline among students and facilitates co-curricular and extracurricular activities.</li>
+      <li>Recommends awards, medals, and prizes based on merit and achievements.</li>
+    </ul>
+
+    <h2 class="panel-heading" id="dac-section" style="margin-top:40px;">Department Academic Committee (DAC)</h2>
+    <p>The Department Academic Committee (DAC) is constituted with members from eminent academic institutions, industry, alumni, and faculty of the department. It plays a significant role in strengthening academic quality, industry interaction, curriculum relevance, and continuous improvement.</p>
+
+    <div class="panel-sub">Composition</div>
+    <div style="overflow-x:auto;">
+      <table class="committee-table">
+        <thead><tr><th>S.No</th><th>Name &amp; Details</th><th>Designation / Organisation</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Dr. S V S Prasad</strong><br><span style="font-size:0.78rem;color:#888;">Professor &amp; HOD, ECE — MLRIT</span></td><td>Professor &amp; HOD, ECE</td><td><span class="committee-badge badge--chairman">Chairman</span></td></tr>
+          <tr><td>2</td><td><strong>Dr. K Nishanth Rao</strong><br><span style="font-size:0.78rem;color:#888;">Associate Professor, ECE — MLRIT</span></td><td>Associate Professor, ECE</td><td><span class="committee-badge badge--academic">Internal Member</span></td></tr>
+          <tr><td>3</td><td><strong>Dr. G. Karthik Reddy</strong><br><span style="font-size:0.78rem;color:#888;">Associate Professor, ECE — MLRIT</span></td><td>Associate Professor, ECE</td><td><span class="committee-badge badge--academic">Internal Member</span></td></tr>
+          <tr><td>4</td><td><strong>Dr. Kiran Chand Ravi</strong><br><span style="font-size:0.78rem;color:#888;">Professor, ECE — MLRIT</span></td><td>Professor, ECE</td><td><span class="committee-badge badge--academic">Internal Member</span></td></tr>
+          <tr><td>5</td><td><strong>Mr. P. Yakaiah</strong><br><span style="font-size:0.78rem;color:#888;">Associate Professor, ECE — MLRIT</span></td><td>Associate Professor, ECE</td><td><span class="committee-badge badge--academic">Internal Member</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel-sub">DAC Responsibilities</div>
+    <ul class="achieve-list" style="max-width:780px;">
+      <li>Interacts and maintains liaison with key stakeholders — industry experts, alumni, academic institutions, employers, and society.</li>
+      <li>Monitors departmental progress and reviews reports related to academic performance and programme outcomes.</li>
+      <li>Develops and recommends new goals, strategies, and revised objectives for the academic programme.</li>
+      <li>Reviews and analyses the gap between curriculum content and industry requirements, providing feedback for improvement.</li>
+      <li>Monitors course planning, teaching methodologies, and effective course delivery.</li>
+      <li>Verifies faculty records — diary maintenance, attendance, internal marks, AAT marks, syllabus coverage, identification of slow and advanced learners.</li>
+      <li>Suggests measures for improving academic standards, employability skills, and innovation culture.</li>
+      <li>Ensures alignment of departmental activities with institutional quality policies.</li>
+      <li>Submits reports and recommendations to the IQAC in the prescribed format.</li>
+    </ul>
   </div>
 
   </div><!-- .dept-body__panels -->
