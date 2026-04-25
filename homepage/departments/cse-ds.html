@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSE (Data Science) Department — MLRIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&family=Raleway:wght@400;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/main.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #3A3A3A; line-height: 1.7; }
+    .dept-nav { background: #0B0F1A; display: flex; align-items: stretch; padding: 0 16px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .dept-nav__link { display: flex; align-items: center; padding: 0 20px; height: 44px; font-family: 'Raleway', sans-serif; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.5); text-decoration: none; position: relative; transition: color 0.2s, background 0.2s; }
+    .dept-nav__link:hover { color: rgba(255,255,255,0.85); background: rgba(232,93,31,0.08); }
+    .dept-nav__link::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) scaleX(0); width: 70%; height: 2px; background: linear-gradient(90deg, transparent, #E85D1F, transparent); transition: transform 0.25s; }
+    .dept-nav__link:hover::after { transform: translateX(-50%) scaleX(1); }
+    .dept-nav__link--active { color: #E85D1F; }
+    .dept-nav__link--active::after { transform: translateX(-50%) scaleX(1); background: #E85D1F; }
+    .dept-nav__link--dept { color: #fff; font-weight: 700; margin-left: auto; }
+    .dept-nav__sep { width: 1px; height: 20px; background: rgba(255,255,255,0.1); align-self: center; margin: 0 4px; }
+    .dept-hero { background: linear-gradient(135deg, #0D3320, #18453B); min-height: 60vh; padding: 80px 48px 60px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+    .dept-hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
+    .dept-hero__video.is-visible { opacity: 0.55; }
+    .dept-hero__overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(13,51,32,0.75), rgba(24,69,59,0.75)); z-index: 1; }
+    .dept-hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 70% 30%, rgba(232,93,31,0.12), transparent 60%); pointer-events: none; z-index: 3; }
+    .dept-hero__eyebrow { font-family: 'Raleway', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 8px; position: relative; z-index: 2; }
+    .dept-hero__title { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.6rem); font-weight: 700; color: #fff; position: relative; z-index: 2; }
+    .dept-tabs { background: #0B0F1A; display: flex; gap: 0; overflow-x: auto; border-bottom: 3px solid #18453B; position: sticky; top: 0; z-index: 40; }
+    .dept-tabs::-webkit-scrollbar { height: 0; }
+    .dept-tab { font-family: 'Raleway', sans-serif; font-size: 0.78rem; font-weight: 700; color: rgba(255,255,255,0.5); text-decoration: none; padding: 14px 24px; white-space: nowrap; cursor: pointer; position: relative; transition: color 0.25s, background 0.25s; }
+    .dept-tab::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) scaleX(0); width: 70%; height: 3px; background: linear-gradient(90deg, transparent, #E85D1F, transparent); transition: transform 0.25s ease; }
+    .dept-tab:hover { color: rgba(255,255,255,0.8); background: rgba(232,93,31,0.08); }
+    .dept-tab:hover::after { transform: translateX(-50%) scaleX(1); }
+    .dept-tab.is-active { color: #fff; background: rgba(232,93,31,0.1); }
+    .dept-tab.is-active::after { transform: translateX(-50%) scaleX(1); background: #E85D1F; height: 3px; }
+    .dept-panel { display: none; padding: 40px 48px; max-width: none; margin: 0; }
+    .dept-panel.is-active { display: block; animation: fadeIn 0.35s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .panel-heading { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 2.5vw, 2.2rem); font-weight: 700; color: #0B0F1A; margin-bottom: 28px; line-height: 1.2; }
+    .panel-heading::after { content: ''; display: block; width: 60px; height: 4px; background: #E85D1F; margin-top: 14px; border-radius: 2px; }
+    .panel-sub { font-family: 'Raleway', sans-serif; font-size: 0.72rem; font-weight: 800; color: #18453B; text-transform: uppercase; letter-spacing: 0.1em; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 2px solid rgba(24,69,59,0.12); }
+    p { font-size: 0.95rem; color: #3A3A3A; max-width: 780px; margin-bottom: 14px; line-height: 1.8; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .card h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.15rem; color: #0B0F1A; margin-bottom: 10px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card--accent { border-top: 3px solid #18453B; transition: transform 0.25s ease, box-shadow 0.25s ease, border-top-color 0.25s ease; }
+    .card--accent:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-top-color: #E85D1F; }
+    .peo-num { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: #18453B; margin-bottom: 10px; }
+    .hod-msg { display: flex; gap: 28px; align-items: flex-start; background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); margin-bottom: 36px; border-left: 4px solid #18453B; }
+    .hod-msg__photo { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid #18453B; }
+    .hod-msg__photo img { width: 100%; height: 100%; object-fit: cover; }
+    .hod-msg__label { font-family: 'Raleway', sans-serif; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #E85D1F; margin-bottom: 8px; }
+    .hod-msg__text { font-size: 0.92rem; color: #444; line-height: 1.8; font-style: italic; max-width: none; }
+    .hod-msg__name { font-family: 'Raleway', sans-serif; font-size: 0.82rem; font-weight: 700; color: #18453B; margin-top: 12px; }
+    .sub-accordion { margin-bottom: 16px; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+    .sub-accordion__header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; font-family: 'Raleway', sans-serif; font-size: 0.88rem; font-weight: 700; color: #0B0F1A; border-left: 3px solid #18453B; transition: background 0.2s, border-left-color 0.25s, transform 0.2s; }
+    .sub-accordion__header:hover { background: rgba(24,69,59,0.04); border-left-color: #E85D1F; transform: translateX(4px); }
+    .sub-accordion__chevron { font-size: 0.7rem; color: #888; transition: transform 0.3s; }
+    .sub-accordion.is-open .sub-accordion__chevron { transform: rotate(180deg); color: #E85D1F; }
+    .sub-accordion.is-open .sub-accordion__header { border-left-color: #E85D1F; color: #E85D1F; }
+    .sub-accordion__body { max-height: 0; overflow: hidden; transition: max-height 0.4s; }
+    .sub-accordion.is-open .sub-accordion__body { max-height: 3000px; }
+    .sub-accordion__content { padding: 0 20px 20px; }
+    .lab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+    .lab-card { background: #f9f8f5; border-radius: 8px; padding: 16px 18px; border-left: 3px solid #18453B; transition: transform 0.25s ease, box-shadow 0.25s ease, border-left-color 0.25s ease; cursor: default; }
+    .lab-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); border-left-color: #E85D1F; }
+    .lab-card__name { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 0.85rem; color: #0B0F1A; margin-bottom: 4px; }
+    .lab-card__desc { font-size: 0.78rem; color: #666; }
+    .obe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 20px; }
+    .obe-col h4 { font-family: 'Raleway', sans-serif; font-size: 0.82rem; font-weight: 800; color: #18453B; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .obe-list { list-style: none; padding: 0; }
+    .obe-list li { font-size: 0.88rem; color: #444; padding: 8px 0 8px 16px; border-bottom: 1px solid rgba(0,0,0,0.05); position: relative; transition: transform 0.2s ease, color 0.2s ease; cursor: default; }
+    .obe-list li:hover { transform: translateX(6px); color: #0B0F1A; }
+    .obe-list li::before { content: ''; position: absolute; left: 0; top: 14px; width: 6px; height: 6px; border-radius: 50%; background: #E85D1F; }
+    .obe-list li a { color: inherit; text-decoration: none; display: block; }
+    .obe-list li a:hover { color: #E85D1F; }
+    .catalog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    .catalog-item { background: #fff; border-radius: 10px; padding: 16px 20px; box-shadow: 0 1px 8px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; border-left: 3px solid #18453B; }
+    .catalog-item:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .catalog-item__text { font-family: 'Raleway', sans-serif; font-size: 0.82rem; font-weight: 700; color: #0B0F1A; }
+    .catalog-item__sub { font-size: 0.68rem; color: #888; display: block; margin-top: 2px; }
+    .pill-row { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .pill { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 0.82rem; padding: 10px 22px; border-radius: 24px; border: 2px solid rgba(24,69,59,0.25); background: transparent; color: #3A3A3A; cursor: pointer; transition: all 0.25s; }
+    .pill:hover { border-color: #E85D1F; color: #E85D1F; }
+    .pill.is-active { background: #18453B; border-color: #18453B; color: #fff; }
+    .subject-list { max-width: 720px; opacity: 0; transform: translateY(10px); transition: opacity 0.35s, transform 0.35s; }
+    .subject-list.is-visible { opacity: 1; transform: translateY(0); }
+    .subject-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.06); gap: 14px; }
+    .subject-num { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 0.72rem; color: #18453B; width: 28px; flex-shrink: 0; }
+    .subject-name { flex: 1; font-size: 0.9rem; color: #3A3A3A; }
+    .subject-code { font-family: 'Raleway', sans-serif; font-size: 0.68rem; font-weight: 700; color: #18453B; background: rgba(24,69,59,0.08); padding: 2px 8px; border-radius: 4px; flex-shrink: 0; }
+    .syll-actions { display: flex; gap: 8px; }
+    .syll-btn { font-family: 'Raleway', sans-serif; font-size: 0.72rem; font-weight: 700; padding: 6px 14px; border-radius: 6px; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+    .syll-btn--download { color: #fff; background: #18453B; }
+    .syll-btn--download:hover { background: #0D3320; }
+    .syll-btn--view { color: #E85D1F; border: 1px solid rgba(232,93,31,0.3); background: transparent; }
+    .syll-btn--view:hover { background: #E85D1F; color: #fff; }
+    .full-syllabus-btn { display: inline-block; font-family: 'Raleway', sans-serif; font-size: 0.85rem; font-weight: 700; color: #fff; background: #18453B; padding: 10px 24px; border-radius: 8px; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+    .full-syllabus-btn:hover { background: #0D3320; transform: translateY(-1px); }
+    .fcard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; }
+    .fcard { width: 100%; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; background: linear-gradient(135deg, #2A2F40, #3A4050); }
+    .fcard img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.4s ease; }
+    .fcard:hover img { transform: scale(1.05); }
+    .fcard__ini { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 2rem; color: rgba(255,255,255,0.3); position: absolute; inset: 0; }
+    .fcard__overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 18px; background: linear-gradient(transparent, rgba(0,0,0,0.85)); z-index: 2; transition: opacity 0.3s; }
+    .fcard__name { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 0.82rem; color: #fff; }
+    .fcard__role { font-size: 0.65rem; color: rgba(255,255,255,0.6); }
+    .fcard::before { content: ''; position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: #E85D1F; clip-path: circle(0% at 100% 0%); transition: clip-path 0.5s cubic-bezier(0.25,0.46,0.45,0.94); z-index: 3; }
+    .fcard:hover::before { clip-path: circle(150% at 100% 0%); }
+    .fcard::after { content: ''; position: absolute; inset: 0; background: rgba(11,15,26,0.85); opacity: 0; transition: opacity 0.3s ease 0.15s; z-index: 4; }
+    .fcard:hover::after { opacity: 1; }
+    .fcard:hover .fcard__overlay { opacity: 0; }
+    .fcard__hover-info { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; z-index: 5; opacity: 0; transform: translateY(10px); transition: opacity 0.35s ease 0.2s, transform 0.35s ease 0.2s; }
+    .fcard:hover .fcard__hover-info { opacity: 1; transform: translateY(0); }
+    .fcard__hover-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.95rem; color: #fff; margin-bottom: 4px; }
+    .fcard__hover-role { font-size: 0.68rem; color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+    .fcard__hover-btn { font-family: 'Raleway', sans-serif; font-size: 0.7rem; font-weight: 700; color: #fff; text-decoration: none; padding: 7px 18px; border: 1px solid #fff; border-radius: 6px; transition: all 0.2s; }
+    .fcard__hover-btn:hover { background: #fff; color: #0B0F1A; }
+    .achieve-list { list-style: none; padding: 0; max-width: 700px; }
+    .achieve-list li { position: relative; padding: 14px 16px 14px 28px; margin-bottom: 8px; border-radius: 8px; background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,0.04); font-size: 0.88rem; color: #444; border-left: 3px solid transparent; transition: transform 0.2s ease, border-left-color 0.2s ease, box-shadow 0.2s ease; }
+    .achieve-list li:hover { transform: translateX(6px); border-left-color: #E85D1F; box-shadow: 0 4px 16px rgba(232,93,31,0.1); }
+    .achieve-list li::before { content: ''; position: absolute; left: 10px; top: 20px; width: 8px; height: 8px; border-radius: 50%; background: #E85D1F; }
+    .placement-stats { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0; }
+    .placement-stat { background: #fff; border-radius: 10px; padding: 20px 28px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: center; flex: 1; min-width: 130px; border-top: 3px solid #E85D1F; }
+    .placement-stat__num { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.6rem; color: #E85D1F; }
+    .placement-stat__label { font-size: 0.72rem; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+    .honour-table { width: 100%; max-width: 700px; border-collapse: separate; border-spacing: 0 6px; }
+    .honour-table th { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #888; text-align: left; padding: 12px 16px; border-bottom: 2px solid rgba(0,0,0,0.08); }
+    .honour-table td { font-size: 0.88rem; color: #333; padding: 14px 16px; background: #fff; transition: background 0.2s ease; }
+    .honour-table tbody tr:hover td { background: rgba(232,93,31,0.06); }
+    .honour-table td:first-child { border-radius: 8px 0 0 8px; border-left: 3px solid transparent; }
+    .honour-table tbody tr:hover td:first-child { border-left: 3px solid #E85D1F; }
+    .honour-table td:last-child { border-radius: 0 8px 8px 0; }
+    .honour-name { font-family: 'Raleway', sans-serif; font-weight: 700; color: #0B0F1A; }
+    .honour-score { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; color: #18453B; }
+    .honour-badge--topper { background: rgba(232,93,31,0.12); color: #E85D1F; display: inline-block; font-family: 'Raleway', sans-serif; font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+    /* Committee table */
+    .committee-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; max-width: 900px; }
+    .committee-table th { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #888; text-align: left; padding: 12px 16px; border-bottom: 2px solid rgba(0,0,0,0.08); }
+    .committee-table td { font-size: 0.88rem; color: #333; padding: 14px 16px; background: #fff; }
+    .committee-table td:first-child { border-radius: 8px 0 0 8px; border-left: 3px solid transparent; }
+    .committee-table tbody tr:hover td:first-child { border-left: 3px solid #E85D1F; }
+    .committee-table tbody tr:hover td { background: rgba(232,93,31,0.04); }
+    .committee-table td:last-child { border-radius: 0 8px 8px 0; }
+    .committee-badge { display: inline-block; font-family: 'Raleway', sans-serif; font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 10px; letter-spacing: 0.04em; }
+    .badge--chairman { background: rgba(24,69,59,0.12); color: #18453B; }
+    .badge--convener { background: rgba(232,93,31,0.12); color: #E85D1F; }
+    .badge--industry { background: rgba(11,15,26,0.08); color: #0B0F1A; }
+    .badge--academic { background: rgba(24,69,59,0.06); color: #18453B; }
+    .streak { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #E85D1F 0%, rgba(232,93,31,0.4) 60%, transparent 100%); transform-origin: left; transform: scaleX(0); opacity: 0; z-index: 9999; pointer-events: none; border-radius: 0 2px 2px 0; }
+    .streak.is-firing { animation: orange-streak 0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+    @keyframes orange-streak { 0% { transform: scaleX(0); opacity: 1; } 65% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
+    .dept-body { display: flex; flex: 1; align-items: flex-start; }
+    .dept-body__panels { flex: 1; min-width: 0; }
+    .dark-sidebar { width: 220px; flex-shrink: 0; position: sticky; top: 44px; height: calc(100vh - 44px); background: #FAFAF8; z-index: 35; padding-top: 24px; border-right: 1px solid rgba(0,0,0,0.05); overflow-y: auto; align-self: flex-start; }
+    .dark-sidebar::-webkit-scrollbar { width: 4px; }
+    .dark-sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 2px; }
+    .dark-sidebar__title { font-family: 'Raleway', sans-serif; font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; color: #1A3A2E; padding: 0 20px 14px; border-bottom: 1px solid rgba(0,0,0,0.06); margin-bottom: 8px; }
+    .ds-item { display: flex; align-items: center; padding: 8px 20px; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s; text-decoration: none; color: inherit; }
+    .ds-item:hover { background: rgba(232,93,31,0.06); }
+    .ds-item.is-active { border-left-color: #E85D1F; background: rgba(232,93,31,0.08); }
+    .ds-item__dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(0,0,0,0.1); flex-shrink: 0; margin-right: 12px; transition: all 0.2s; }
+    .ds-item.is-active .ds-item__dot { background: #E85D1F; box-shadow: 0 0 6px rgba(232,93,31,0.4); }
+    .ds-item__label { font-family: 'Raleway', sans-serif; font-size: 0.7rem; font-weight: 600; color: rgba(26,58,46,0.5); transition: color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ds-item:hover .ds-item__label { color: rgba(232,93,31,0.8); }
+    .ds-item.is-active .ds-item__label { color: #E85D1F; }
+    @media (max-width: 768px) {
+      .dept-panel { padding: 32px 20px; }
+      .two-col, .three-col, .obe-grid, .catalog-grid, .lab-grid { grid-template-columns: 1fr; }
+      .hod-msg { flex-direction: column; align-items: center; text-align: center; }
+      .dark-sidebar { display: none; }
+      .dept-body { display: block; }
+      .fcard-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .fcard { height: 220px; }
+    }
+    .ds-item[data-ds-tab]:not([data-ds-tab="overview"]) { display: none; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="masthead">
+      <div class="container masthead__inner">
+        <a href="../index.html" class="masthead__logo" aria-label="MLRIT Home"><img src="../mlrit-logo-transparent.png" alt="MLRIT Logo" /></a>
+        <div class="masthead__tagline"><span>Marri Laxman Reddy Institute of Technology</span></div>
+        <a href="#" class="masthead__eapcet">EAPCET CODE : MLID</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="dept-nav">
+    <a href="../index.html" class="dept-nav__link">Home</a>
+    <span class="dept-nav__sep"></span>
+    <a href="ug.html" class="dept-nav__link dept-nav__link--active">Undergraduate</a>
+    <a href="pg.html" class="dept-nav__link">Postgraduate</a>
+    <span class="dept-nav__sep"></span>
+    <span class="dept-nav__link dept-nav__link--dept">CSE (Data Science) Department</span>
+  </nav>
+
+  <div class="dept-hero" id="page-top">
+    <video class="dept-hero__video" id="heroVideo" muted loop playsinline preload="metadata">
+      <source src="dept.mp4" type="video/mp4" />
+    </video>
+    <div class="dept-hero__overlay"></div>
+    <div class="dept-hero__eyebrow">B.Tech — Computer Science &amp; Engineering (Data Science)</div>
+    <div class="dept-hero__title">Department of CSE (Data Science)</div>
+  </div>
+  <script>
+    (function(){
+      var hero = document.querySelector('.dept-hero'), vid = document.getElementById('heroVideo');
+      if (!hero || !vid) return;
+      hero.addEventListener('mouseenter', function(){ if(vid.readyState===0)vid.load(); var p=vid.play();if(p&&p.catch)p.catch(function(){}); vid.classList.add('is-visible'); });
+      hero.addEventListener('mouseleave', function(){ vid.classList.remove('is-visible'); setTimeout(function(){ vid.pause(); vid.currentTime=0; },650); });
+    })();
+  </script>
+
+  <nav class="dept-tabs" id="deptTabs">
+    <a class="dept-tab is-active" data-tab="overview">Overview</a>
+    <a class="dept-tab" data-tab="objectives">Objectives</a>
+    <a class="dept-tab" data-tab="faculty">Faculty Profiles</a>
+    <a class="dept-tab" data-tab="academics">Academics</a>
+    <a class="dept-tab" data-tab="achievements">Achievements</a>
+    <a class="dept-tab" data-tab="committees">Committees</a>
+  </nav>
+  <div class="streak" id="navStreak"></div>
+
+  <div class="dept-body">
+    <aside class="dark-sidebar" id="darkSidebar">
+      <div class="dark-sidebar__title">Quick Nav</div>
+      <a class="ds-item" data-ds-tab="overview" data-ds-target="hod-msg"><span class="ds-item__dot"></span><span class="ds-item__label">HOD Message</span></a>
+      <a class="ds-item" data-ds-tab="overview" data-ds-target="vm-section"><span class="ds-item__dot"></span><span class="ds-item__label">Vision &amp; Mission</span></a>
+      <a class="ds-item" data-ds-tab="overview" data-ds-target="teaching-method"><span class="ds-item__dot"></span><span class="ds-item__label">Teaching</span></a>
+      <a class="ds-item" data-ds-tab="overview" data-ds-target="history-section"><span class="ds-item__dot"></span><span class="ds-item__label">History</span></a>
+      <a class="ds-item" data-ds-tab="overview" data-ds-target="labs-section"><span class="ds-item__dot"></span><span class="ds-item__label">Labs</span></a>
+      <a class="ds-item" data-ds-tab="objectives" data-ds-target="peo-section"><span class="ds-item__dot"></span><span class="ds-item__label">PEOs</span></a>
+      <a class="ds-item" data-ds-tab="objectives" data-ds-target="obe-section"><span class="ds-item__dot"></span><span class="ds-item__label">OBE</span></a>
+      <a class="ds-item" data-ds-tab="objectives" data-ds-target="handbook-section"><span class="ds-item__dot"></span><span class="ds-item__label">Handbook</span></a>
+      <a class="ds-item" data-ds-tab="faculty" data-ds-target="panel-faculty"><span class="ds-item__dot"></span><span class="ds-item__label">All Faculty</span></a>
+      <a class="ds-item" data-ds-tab="academics" data-ds-target="catalog-section"><span class="ds-item__dot"></span><span class="ds-item__label">Course Catalog</span></a>
+      <a class="ds-item" data-ds-tab="academics" data-ds-target="syll-pdfs"><span class="ds-item__dot"></span><span class="ds-item__label">Syllabus PDFs</span></a>
+      <a class="ds-item" data-ds-tab="academics" data-ds-target="syll-explorer"><span class="ds-item__dot"></span><span class="ds-item__label">Syllabus Explorer</span></a>
+      <a class="ds-item" data-ds-tab="achievements" data-ds-target="achieve-section"><span class="ds-item__dot"></span><span class="ds-item__label">Achievements</span></a>
+      <a class="ds-item" data-ds-tab="achievements" data-ds-target="placement-section"><span class="ds-item__dot"></span><span class="ds-item__label">Placements</span></a>
+      <a class="ds-item" data-ds-tab="achievements" data-ds-target="honour-section"><span class="ds-item__dot"></span><span class="ds-item__label">Rankings</span></a>
+      <a class="ds-item" data-ds-tab="committees" data-ds-target="daac-section"><span class="ds-item__dot"></span><span class="ds-item__label">DAAC</span></a>
+      <a class="ds-item" data-ds-tab="committees" data-ds-target="daac-responsibilities"><span class="ds-item__dot"></span><span class="ds-item__label">Responsibilities</span></a>
+    </aside>
+
+    <div class="dept-body__panels">
+
+      <!-- ═══ TAB 1: Overview ═══ -->
+      <div class="dept-panel is-active" id="panel-overview">
+        <h2 id="about-dept" class="panel-heading">About the Department</h2>
+
+        <div id="hod-msg" class="hod-msg">
+          <div class="hod-msg__photo"><img src="images/cse-ds/hod.jpg" alt="Dr. P. Subhashini" /></div>
+          <div class="hod-msg__content">
+            <div class="hod-msg__label">From the HOD's Desk</div>
+            <p class="hod-msg__text">"Data Science is transforming every domain — from healthcare to finance, security to sustainability. At MLRIT, our department is committed to nurturing graduates who are not just technically proficient but analytically sharp, ethically grounded, and ready to lead in this data-driven era. With a curriculum designed around real-world challenges, cutting-edge research, and strong industry collaboration, we prepare students to become innovators and problem-solvers of tomorrow."</p>
+            <div class="hod-msg__name">— Dr. P. Subhashini, Professor &amp; HOD</div>
+            <div style="display:flex;gap:24px;margin-top:16px;flex-wrap:wrap;">
+              <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#18453B;">16</div><div style="font-size:0.68rem;color:#888;font-family:'Raleway',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">Years Exp.</div></div>
+              <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#18453B;">22</div><div style="font-size:0.68rem;color:#888;font-family:'Raleway',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">Publications</div></div>
+              <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#18453B;">6</div><div style="font-size:0.68rem;color:#888;font-family:'Raleway',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">Patents</div></div>
+              <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#18453B;">1</div><div style="font-size:0.68rem;color:#888;font-family:'Raleway',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">Book Authored</div></div>
+            </div>
+          </div>
+        </div>
+
+        <p>The Department of Computer Science and Engineering (Data Science) at MLRIT offers a specialized B.Tech programme focusing on data science, machine learning, big data analytics, and artificial intelligence. The department equips students with strong foundations in mathematics, statistics, and programming, combined with hands-on experience in modern data tools and platforms.</p>
+
+        <div class="panel-sub" id="vm-section">Vision and Mission</div>
+        <div class="two-col">
+          <div class="card card--accent">
+            <h3>Vision</h3>
+            <p>Achieve global recognition through innovation, interdisciplinary research and excellence in Data Science.</p>
+          </div>
+          <div class="card card--accent">
+            <h3>Mission</h3>
+            <p><strong>M1.</strong> Foster innovation and interdisciplinary research addressing real-world challenges using advanced data science techniques.</p>
+            <p><strong>M2.</strong> Equip students with analytical, technical, and professional skills for industry excellence and entrepreneurship.</p>
+            <p><strong>M3.</strong> Promote global collaboration with academia, industry, and research organizations ensuring ethical practice and societal impact.</p>
+          </div>
+        </div>
+
+        <div class="panel-sub" id="teaching-method">Innovative Teaching Methodology</div>
+        <p>The department follows an active learning pedagogy integrating project-based learning, flipped classrooms, and industry-mentored sessions. Students engage in real-time data science projects, hackathons, and research activities. Regular guest lectures from industry professionals in AI, ML, and analytics complement the curriculum, bridging the gap between academia and industry.</p>
+
+        <div style="margin-top:32px;">
+          <div id="history-section" class="sub-accordion">
+            <div class="sub-accordion__header">Heritage of the Department <span class="sub-accordion__chevron">&#9660;</span></div>
+            <div class="sub-accordion__body"><div class="sub-accordion__content">
+              <p>The Department of Computer Science and Engineering (Data Science) was established at MLRIT to meet the growing demand for data science professionals in industry and research. The programme is designed under the Choice Based Credit System (CBCS) and follows an Outcome-Based Education (OBE) framework aligned with NBA accreditation standards.</p>
+              <p>The B.Tech (CSE-DS) programme prepares students for careers in data engineering, analytics, machine learning, and AI — domains that are at the forefront of technological advancement globally.</p>
+            </div></div>
+          </div>
+          <div id="labs-section" class="sub-accordion">
+            <div class="sub-accordion__header">Academic Laboratories <span class="sub-accordion__chevron">&#9660;</span></div>
+            <div class="sub-accordion__body"><div class="sub-accordion__content">
+              <div class="lab-grid">
+                <div class="lab-card"><div class="lab-card__name">Data Science Lab</div><div class="lab-card__desc">Python, R, Jupyter — Data analysis and visualization</div></div>
+                <div class="lab-card"><div class="lab-card__name">Machine Learning Lab</div><div class="lab-card__desc">Scikit-learn, TensorFlow, PyTorch — ML model development</div></div>
+                <div class="lab-card"><div class="lab-card__name">Big Data Technologies Lab</div><div class="lab-card__desc">Hadoop, Spark, Kafka — Distributed data processing</div></div>
+                <div class="lab-card"><div class="lab-card__name">Database Management Systems Lab</div><div class="lab-card__desc">SQL, Oracle, MongoDB — Relational and NoSQL databases</div></div>
+                <div class="lab-card"><div class="lab-card__name">Web Programming Lab</div><div class="lab-card__desc">HTML, CSS, JavaScript, React — Web development</div></div>
+                <div class="lab-card"><div class="lab-card__name">Predictive Analytics Lab</div><div class="lab-card__desc">Statistical modeling, forecasting, Power BI, Tableau</div></div>
+                <div class="lab-card"><div class="lab-card__name">Stream Processing Lab</div><div class="lab-card__desc">Real-time data streaming and analytics platforms</div></div>
+                <div class="lab-card"><div class="lab-card__name">Project Work Lab</div><div class="lab-card__desc">Final year research projects and industry collaboration</div></div>
+              </div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB 2: Objectives ═══ -->
+      <div class="dept-panel" id="panel-objectives">
+        <h2 class="panel-heading" id="peo-section">Programme Educational Objectives</h2>
+        <div class="three-col">
+          <div class="card card--accent" style="text-align:center;"><div class="peo-num">PEO 1</div><p>Enable globally competent professional careers in data science, analytics, and AI-driven industries.</p></div>
+          <div class="card card--accent" style="text-align:center;"><div class="peo-num">PEO 2</div><p>Prepare students to excel with technical skills and research capabilities addressing real-world societal needs.</p></div>
+          <div class="card card--accent" style="text-align:center;"><div class="peo-num">PEO 3</div><p>Empower graduates with entrepreneurial skills and lifelong learning attitudes supporting economic growth.</p></div>
+        </div>
+
+        <div class="panel-sub" id="obe-section">Outcome Based Education (OBE)</div>
+        <div class="obe-grid">
+          <div class="obe-col">
+            <h4>B.Tech</h4>
+            <ul class="obe-list">
+              <li><a href="obe/educational-objectives.html">Educational Objectives and Outcomes</a></li>
+              <li><a href="obe/obe-process-manual.html">OBE Process Manual</a></li>
+              <li><a href="obe/course-outcomes.html">Course Outcomes Description Booklets</a></li>
+              <li><a href="obe/co-attainment.html">Course Outcomes (COs) Attainment</a></li>
+              <li><a href="obe/co-attainment.html#po-attainment">Program Outcomes (POs) Attainment</a></li>
+            </ul>
+          </div>
+          <div class="obe-col">
+            <h4>OBE Portal</h4>
+            <div class="card" style="margin-top:0;">
+              <h3>OBE Assessment System</h3>
+              <p>Access the OBE portal for CO/PO attainment data.</p>
+              <a href="http://103.15.62.235/ioncudos_mlrit_tier1/" target="_blank" style="font-family:Raleway;font-size:0.78rem;font-weight:700;color:#E85D1F;text-decoration:none;">Open OBE Portal &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-sub" id="handbook-section">Handbook</div>
+        <div class="card" style="max-width:500px;"><h3>CSE (Data Science) Department Handbook</h3><p>Department of CSE (Data Science) — Academic Year 2025-26</p></div>
+      </div>
+
+      <!-- ═══ TAB 3: Faculty ═══ -->
+      <div class="dept-panel" id="panel-faculty">
+        <h2 class="panel-heading">Faculty Profiles</h2>
+        <p>Hover for details. Click "View Profile" for full information.</p>
+
+        <div class="panel-sub">Professor &amp; HOD</div>
+        <div class="fcard-grid" style="margin-bottom:32px;">
+          <div class="fcard" style="position:relative;">
+            <img src="images/cse-ds/hod.jpg" alt="Dr. P. Subhashini" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="fcard__ini" style="display:none;">PS</div>
+            <div style="position:absolute;top:10px;left:10px;z-index:6;font-family:'Raleway',sans-serif;font-size:0.6rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:#18453B;padding:3px 8px;border-radius:4px;">HOD</div>
+            <div class="fcard__overlay"><div class="fcard__name">Dr. P. Subhashini</div><div class="fcard__role">Professor &amp; HOD | 16 Yrs Exp.</div></div>
+            <div class="fcard__hover-info"><div class="fcard__hover-name">Dr. P. Subhashini</div><div class="fcard__hover-role">Professor &amp; HOD — Ph.D (CSE)<br>22 Papers · 6 Patents · 1 Book</div><a href="https://mlrit.ac.in/faculty/dr-p-subhashini/" target="_blank" class="fcard__hover-btn">View Profile</a></div>
+          </div>
+        </div>
+
+        <div class="panel-sub">Professors</div>
+        <div class="fcard-grid" style="margin-bottom:32px;">
+          <div class="fcard">
+            <img src="https://mlrit.ac.in/wp-content/uploads/2024/06/Prof.-Kamesh-Sir.jpg" alt="Dr. D.B.K. Kamesh" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="fcard__ini" style="display:none;">DK</div>
+            <div class="fcard__overlay"><div class="fcard__name">Dr. D.B.K. Kamesh</div><div class="fcard__role">Professor</div></div>
+            <div class="fcard__hover-info"><div class="fcard__hover-name">Dr. D.B.K. Kamesh</div><div class="fcard__hover-role">Professor</div><a href="https://mlrit.ac.in/faculty/dr-d-b-k-kamesh/" target="_blank" class="fcard__hover-btn">View Profile</a></div>
+          </div>
+        </div>
+
+        <div class="panel-sub">Associate Professors</div>
+        <div class="fcard-grid" style="margin-bottom:32px;">
+          <div class="fcard">
+            <img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.11-AM-1-e1717231709688.jpeg" alt="Dr. Damalla Jyothi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="fcard__ini" style="display:none;">DJ</div>
+            <div class="fcard__overlay"><div class="fcard__name">Dr. Damalla Jyothi</div><div class="fcard__role">Associate Professor</div></div>
+            <div class="fcard__hover-info"><div class="fcard__hover-name">Dr. Damalla Jyothi</div><div class="fcard__hover-role">Associate Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div>
+          </div>
+          <div class="fcard">
+            <img src="https://mlrit.ac.in/wp-content/uploads/2022/02/place-person.jpg" alt="Dr. P. Salma Khatoon" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="fcard__ini" style="display:none;">SK</div>
+            <div class="fcard__overlay"><div class="fcard__name">Dr. P. Salma Khatoon</div><div class="fcard__role">Associate Professor</div></div>
+            <div class="fcard__hover-info"><div class="fcard__hover-name">Dr. P. Salma Khatoon</div><div class="fcard__hover-role">Associate Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div>
+          </div>
+          <div class="fcard">
+            <img src="https://mlrit.ac.in/wp-content/uploads/2022/03/veera.jpg" alt="Dr. Veerasekhar Reddy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="fcard__ini" style="display:none;">VR</div>
+            <div class="fcard__overlay"><div class="fcard__name">Dr. Veerasekhar Reddy</div><div class="fcard__role">Associate Professor</div></div>
+            <div class="fcard__hover-info"><div class="fcard__hover-name">Dr. Veerasekhar Reddy</div><div class="fcard__hover-role">Associate Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div>
+          </div>
+        </div>
+
+        <div class="panel-sub">Assistant Professors</div>
+        <div class="fcard-grid">
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2022/03/Thulasichitra-Photo.jpg" alt="N. Thulasi Chithra" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">NT</div><div class="fcard__overlay"><div class="fcard__name">N. Thulasi Chithra</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">N. Thulasi Chithra</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2022/03/navya.jpg" alt="S. Navya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">SN</div><div class="fcard__overlay"><div class="fcard__name">S. Navya</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">S. Navya</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2022/03/sandeep.jpg" alt="Mr. D. Sandeep" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">DS</div><div class="fcard__overlay"><div class="fcard__name">Mr. D. Sandeep</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mr. D. Sandeep</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2022/07/Anwar-Passport-photo.jpg" alt="Mr. Mohd Anwar Ali" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">MA</div><div class="fcard__overlay"><div class="fcard__name">Mr. Mohd Anwar Ali</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mr. Mohd Anwar Ali</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2022/07/Shushma.jpeg" alt="Ms. B. Sushma" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">BS</div><div class="fcard__overlay"><div class="fcard__name">Ms. B. Sushma</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Ms. B. Sushma</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2023/07/Pravathi-mam.jpeg" alt="Mrs. S. Parvathi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">SP</div><div class="fcard__overlay"><div class="fcard__name">Mrs. S. Parvathi</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mrs. S. Parvathi</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2023/07/Sandhya-mam.jpeg" alt="N. Sandhya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">NS</div><div class="fcard__overlay"><div class="fcard__name">N. Sandhya</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">N. Sandhya</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2023/07/Srividya-mam.jpg" alt="Mrs. M. Srividya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">MS</div><div class="fcard__overlay"><div class="fcard__name">Mrs. M. Srividya</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mrs. M. Srividya</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2023/07/Neelima-mam.jpg" alt="Ms. D. Neelima Priyadarshini" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">DN</div><div class="fcard__overlay"><div class="fcard__name">Ms. D. Neelima Priyadarshini</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Ms. D. Neelima Priyadarshini</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2023/07/vijayasri.jpg" alt="Ms. N. Vijayasri" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">NV</div><div class="fcard__overlay"><div class="fcard__name">Ms. N. Vijayasri</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Ms. N. Vijayasri</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2023/07/IMG20190818205251-Rowsonara-Begum-e1688632978390.jpg" alt="Rowsonara Begum" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">RB</div><div class="fcard__overlay"><div class="fcard__name">Rowsonara Begum</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Rowsonara Begum</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-9.26.21-AM.jpeg" alt="Bolagani Balaji" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">BB</div><div class="fcard__overlay"><div class="fcard__name">Bolagani Balaji</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Bolagani Balaji</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.02-AM-e1717231032849.jpeg" alt="Mrs. Banoth Rajeshwari" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">BR</div><div class="fcard__overlay"><div class="fcard__name">Mrs. Banoth Rajeshwari</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mrs. Banoth Rajeshwari</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.03-AM-1-e1717230519763.jpeg" alt="Irfan Bagawan" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">IB</div><div class="fcard__overlay"><div class="fcard__name">Irfan Bagawan</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Irfan Bagawan</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.06-AM-e1717230722708.jpeg" alt="Kiran Kumar Reddy A" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">KK</div><div class="fcard__overlay"><div class="fcard__name">Kiran Kumar Reddy. A</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Kiran Kumar Reddy. A</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.07-AM-e1715157114915.jpeg" alt="Malothu Sindhuja" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">MS</div><div class="fcard__overlay"><div class="fcard__name">Malothu Sindhuja</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Malothu Sindhuja</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.08-AM-1-e1714024454302.jpeg" alt="Hasina Nasrin" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">HN</div><div class="fcard__overlay"><div class="fcard__name">Hasina Nasrin</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Hasina Nasrin</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.08-AM-2-e1715157305225.jpeg" alt="Ms. K. Alankruthi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">KA</div><div class="fcard__overlay"><div class="fcard__name">Ms. K. Alankruthi</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Ms. K. Alankruthi</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.09-AM-1-e1717231290334.jpeg" alt="Mrs. B. Ravali Reddy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">RR</div><div class="fcard__overlay"><div class="fcard__name">Mrs. B. Ravali Reddy</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mrs. B. Ravali Reddy</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.09-AM-2-e1717231362360.jpeg" alt="Mathipogu Ashok Babu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">MA</div><div class="fcard__overlay"><div class="fcard__name">Mathipogu Ashok Babu</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mathipogu Ashok Babu</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.10-AM-e1717231420387.jpeg" alt="Mrs. K. Srinija" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">KS</div><div class="fcard__overlay"><div class="fcard__name">Mrs. K. Srinija</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mrs. K. Srinija</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.10-AM-1-e1717231497753.jpeg" alt="Bhukya Balakrishna" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">BB</div><div class="fcard__overlay"><div class="fcard__name">Bhukya Balakrishna</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Bhukya Balakrishna</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.10-AM-2-e1717231567808.jpeg" alt="Jangam Nagaraju" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">JN</div><div class="fcard__overlay"><div class="fcard__name">Jangam Nagaraju</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Jangam Nagaraju</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.18.11-AM-e1717231637621.jpeg" alt="Mary Navyatha Govindu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">MN</div><div class="fcard__overlay"><div class="fcard__name">Mary Navyatha Govindu</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mary Navyatha Govindu</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-24-at-2.05.20-PM.jpeg" alt="Mrs. Pallavi Mechineni" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">PM</div><div class="fcard__overlay"><div class="fcard__name">Mrs. Pallavi Mechineni</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mrs. Pallavi Mechineni</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.17.59-AM-1-e1717230120786.jpeg" alt="Bochu Sandhya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">BS</div><div class="fcard__overlay"><div class="fcard__name">Bochu Sandhya</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Bochu Sandhya</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/04/WhatsApp-Image-2024-04-25-at-11.17.59-AM-2-e1717230252499.jpeg" alt="Mrs. Swathi Dendi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">SD</div><div class="fcard__overlay"><div class="fcard__name">Mrs. Swathi Dendi</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Mrs. Swathi Dendi</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/07/20240727_102447-e1767091692299.jpeg" alt="Ms. P. Nishitha" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">PN</div><div class="fcard__overlay"><div class="fcard__name">Ms. P. Nishitha</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Ms. P. Nishitha</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/07/20240727_102321-e1767160788160.jpeg" alt="A. Nirisha" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">AN</div><div class="fcard__overlay"><div class="fcard__name">A. Nirisha</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">A. Nirisha</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/07/20240727_102154.jpeg" alt="S. Anudeep" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">SA</div><div class="fcard__overlay"><div class="fcard__name">S. Anudeep</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">S. Anudeep</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/07/20240727_102119.jpeg" alt="Ms. Madhavi Banala" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">MB</div><div class="fcard__overlay"><div class="fcard__name">Ms. Madhavi Banala</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Ms. Madhavi Banala</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2024/08/Divya-Vinjamuri.jpg" alt="V. Divya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">VD</div><div class="fcard__overlay"><div class="fcard__name">V. Divya</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">V. Divya</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/WhatsApp-Image-2025-03-18-at-11.05.33-AM.jpeg" alt="Tahneyath Ahmed" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">TA</div><div class="fcard__overlay"><div class="fcard__name">Tahneyath Ahmed</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Tahneyath Ahmed</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/WhatsApp-Image-2025-03-18-at-10.39.42-AM-e1767087219391.jpeg" alt="K. Rani" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">KR</div><div class="fcard__overlay"><div class="fcard__name">K. Rani</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">K. Rani</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/WhatsApp-Image-2025-03-18-at-10.46.14-AM-e1767160277107.jpeg" alt="Manasaraj" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">MR</div><div class="fcard__overlay"><div class="fcard__name">Manasaraj</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Manasaraj</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/shakina.jpeg" alt="S. Shakina" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">SS</div><div class="fcard__overlay"><div class="fcard__name">S. Shakina</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">S. Shakina</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/SRAVANTHI.jpeg" alt="Sravanthi Anumasula" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">SA</div><div class="fcard__overlay"><div class="fcard__name">Sravanthi Anumasula</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Sravanthi Anumasula</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/SRIVALLI.jpeg" alt="D. Srivalli" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">DS</div><div class="fcard__overlay"><div class="fcard__name">D. Srivalli</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">D. Srivalli</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/GAYATRI-e1742367605108.jpeg" alt="D. Gayathri" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">DG</div><div class="fcard__overlay"><div class="fcard__name">D. Gayathri</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">D. Gayathri</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/babyrani-e1742367135438.jpeg" alt="N. Baby Rani" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">NB</div><div class="fcard__overlay"><div class="fcard__name">N. Baby Rani</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">N. Baby Rani</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><img src="https://mlrit.ac.in/wp-content/uploads/2025/03/AMULYA.jpeg" alt="Dasari Amulya" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="fcard__ini" style="display:none;">DA</div><div class="fcard__overlay"><div class="fcard__name">Dasari Amulya</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Dasari Amulya</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+          <div class="fcard"><div class="fcard__ini">AB</div><div class="fcard__overlay"><div class="fcard__name">Arshiya Begum</div><div class="fcard__role">Assistant Professor</div></div><div class="fcard__hover-info"><div class="fcard__hover-name">Arshiya Begum</div><div class="fcard__hover-role">Assistant Professor</div><a href="#" class="fcard__hover-btn">View Profile</a></div></div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB 4: Academics ═══ -->
+      <div class="dept-panel" id="panel-academics">
+        <h2 class="panel-heading">Academics</h2>
+
+        <div class="panel-sub" id="catalog-section">Course Catalog</div>
+        <div class="catalog-grid">
+          <a href="syllabus/pdfs/cse-ds-r25-catalogue.pdf" target="_blank" class="catalog-item"><div><span class="catalog-item__text">B.Tech Course Catalog — R25</span><span class="catalog-item__sub">2025 regulation — Latest</span></div></a>
+          <a href="syllabus/pdfs/cse-ds-r22-catalogue.pdf" target="_blank" class="catalog-item"><div><span class="catalog-item__text">B.Tech Course Catalog — R22</span><span class="catalog-item__sub">2022 regulation</span></div></a>
+        </div>
+
+        <div class="panel-sub" id="syll-pdfs">Syllabus PDFs</div>
+        <div class="catalog-grid" style="grid-template-columns:1fr;">
+          <div class="catalog-item" style="justify-content:space-between;">
+            <div><span class="catalog-item__text">R25 Complete Syllabus</span><span class="catalog-item__sub">2025 regulation</span></div>
+            <div class="syll-actions">
+              <a href="syllabus/pdfs/cse-ds-r25-catalogue.pdf" target="_blank" class="syll-btn syll-btn--view">View</a>
+              <a href="syllabus/pdfs/cse-ds-r25-catalogue.pdf" download class="syll-btn syll-btn--download">Download</a>
+            </div>
+          </div>
+          <div class="catalog-item" style="justify-content:space-between;">
+            <div><span class="catalog-item__text">R22 Complete Syllabus</span><span class="catalog-item__sub">2022 regulation</span></div>
+            <div class="syll-actions">
+              <a href="syllabus/pdfs/cse-ds-r22-catalogue.pdf" target="_blank" class="syll-btn syll-btn--view">View</a>
+              <a href="syllabus/pdfs/cse-ds-r22-catalogue.pdf" download class="syll-btn syll-btn--download">Download</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-sub" id="syll-explorer">Semester-wise Syllabus Explorer</div>
+        <p style="font-style:italic;color:#666;">Select regulation, year and semester to browse subjects.</p>
+        <div class="pill-row" id="regPills">
+          <button class="pill is-active" data-reg="r25">R25</button>
+          <button class="pill" data-reg="r22">R22</button>
+        </div>
+        <div class="pill-row" id="yearPills"></div>
+        <div class="pill-row" id="semPills" style="display:none;"></div>
+        <div class="subject-list" id="subjectList"></div>
+        <div id="fullSyllabusBtn" style="display:none; margin-top:20px;"></div>
+      </div>
+
+      <!-- ═══ TAB 5: Achievements ═══ -->
+      <div class="dept-panel" id="panel-achievements">
+        <h2 class="panel-heading">Achievements</h2>
+
+        <div id="achieve-section">
+          <ul class="achieve-list">
+            <li>Dr. P. Subhashini (HOD) has authored <strong>22 research papers</strong> in reputed international journals covering DDoS detection, skin cancer prediction, speech emotion recognition, and helmet detection using ML.</li>
+            <li>Dr. P. Subhashini holds <strong>6 patents</strong> in cybersecurity, IoT applications, and data privacy protection systems.</li>
+            <li>Book authored by HOD: <em>"Unlocking the Power of Language: Integrating NLP and Information Retrieval for Effective Knowledge Extraction."</em></li>
+            <li>Faculty development programme conducted on <strong>"Machine Learning and Data Science for Engineering Applications"</strong> through E&amp;ICT Academy, NIT Warangal.</li>
+            <li>Students actively participate in SWAYAM national online learning courses for continuous skill development.</li>
+            <li>Active student chapters of <strong>IEEE, CSI, and ISTE</strong> conducting year-round technical events, workshops, and seminars.</li>
+            <li>MLRIT ranked <strong>5th in Hyderabad</strong> and <strong>48th among Top 100 T-Schools in India</strong> — DataQuest Top T School Survey 2026.</li>
+            <li>MLRIT ranked <strong>6th among top private engineering institutes in Telangana</strong> — Times Engineering Institute Ranking 2025.</li>
+          </ul>
+        </div>
+
+        <div class="panel-sub" id="placement-section">Placements</div>
+        <div class="placement-stats">
+          <div class="placement-stat"><div class="placement-stat__num">—</div><div class="placement-stat__label">Placement Rate</div></div>
+          <div class="placement-stat"><div class="placement-stat__num">—</div><div class="placement-stat__label">Highest Package</div></div>
+          <div class="placement-stat"><div class="placement-stat__num">—</div><div class="placement-stat__label">Students Placed</div></div>
+          <div class="placement-stat"><div class="placement-stat__num">—</div><div class="placement-stat__label">Recruiters</div></div>
+        </div>
+
+        <div class="panel-sub" id="honour-section">Rankings &amp; Recognition</div>
+        <div class="three-col" style="margin-top:8px;">
+          <div class="card card--accent">
+            <div class="peo-num">DataQuest 2026</div>
+            <h3 style="font-size:1.6rem;color:#E85D1F;">5<span style="font-size:0.9rem;color:#888;font-family:'Inter',sans-serif;font-weight:400;">th in Hyderabad</span></h3>
+            <p style="margin-bottom:4px;">48th among Top 100 T-Schools in India</p>
+            <p style="font-size:0.78rem;color:#999;">Top T-School Survey 2026</p>
+          </div>
+          <div class="card card--accent">
+            <div class="peo-num">The Week 2025</div>
+            <h3 style="font-size:1.6rem;color:#E85D1F;">9<span style="font-size:0.9rem;color:#888;font-family:'Inter',sans-serif;font-weight:400;">th in Hyderabad</span></h3>
+            <p style="margin-bottom:4px;">39th in South Zone · 6th Top Emerging Private College</p>
+            <p style="font-size:0.78rem;color:#999;">Best College Survey 2025</p>
+          </div>
+          <div class="card card--accent">
+            <div class="peo-num">Times 2025</div>
+            <h3 style="font-size:1.6rem;color:#E85D1F;">6<span style="font-size:0.9rem;color:#888;font-family:'Inter',sans-serif;font-weight:400;">th in Telangana</span></h3>
+            <p style="margin-bottom:4px;">24th in South Zone among private engineering institutes</p>
+            <p style="font-size:0.78rem;color:#999;">Times Engineering Institute Ranking 2025</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB 6: Committees ═══ -->
+      <div class="dept-panel" id="panel-committees">
+        <h2 class="panel-heading" id="daac-section">Departmental Academic Advisory Committee (DAAC)</h2>
+        <p>A Department Advisory Board (DAB) is a structured committee that brings together faculty, industry experts and alumni to guide academic quality, align curriculum with industry needs, and support departmental growth. It acts as a bridge between academia and external stakeholders, ensuring programmes remain relevant and future-ready.</p>
+
+        <div style="overflow-x:auto;margin-top:24px;">
+          <table class="committee-table">
+            <thead>
+              <tr><th>S.No</th><th>Name &amp; Details</th><th>Designation at MLRIT / Organisation</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Dr. V. Radhika Devi</strong><br><span style="font-size:0.78rem;color:#888;">Principal, MLRIT</span></td>
+                <td>Principal, MLRIT</td>
+                <td><span class="committee-badge badge--chairman">Chairman</span></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Dr. P. Subhashini</strong><br><span style="font-size:0.78rem;color:#888;">HOD CSE(DS), MLRIT</span></td>
+                <td>HOD, CSE (Data Science), MLRIT</td>
+                <td><span class="committee-badge badge--convener">Convener</span></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>Dr. K. Sai Prasad</strong><br><span style="font-size:0.78rem;color:#888;">HOD AIML, MLRIT</span></td>
+                <td>HOD, AI &amp; ML, MLRIT</td>
+                <td><span class="committee-badge badge--convener">Co-Convener</span></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>Dr. B. Padmaja Rani</strong><br><span style="font-size:0.78rem;color:#888;">Prof. of CSE, JNTUH CEH</span></td>
+                <td>Professor of CSE, JNTUH CEH</td>
+                <td><span class="committee-badge badge--academic">External Academic Member</span></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>Dr. K. P. Supreethi</strong><br><span style="font-size:0.78rem;color:#888;">Prof. of CSE, JNTUH CEH</span></td>
+                <td>Professor of CSE, JNTUH CEH</td>
+                <td><span class="committee-badge badge--academic">External Academic Member</span></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><strong>Mr. Nagarjuna Malladi</strong><br><span style="font-size:0.78rem;color:#888;">Delivery Head, Tech Mahindra</span></td>
+                <td>Delivery Head, Tech Mahindra</td>
+                <td><span class="committee-badge badge--industry">Industry Expert</span></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><strong>Mr. Anirudh Pucha</strong><br><span style="font-size:0.78rem;color:#888;">Senior Solution Architect<br>EMELEX Business Solutions LLP / Lloyds Technology Centre</span></td>
+                <td>Senior Solution Architect, EMELEX / Lloyds Technology Centre</td>
+                <td><span class="committee-badge badge--industry">Industry Expert</span></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><strong>Mr. C. Srikanth</strong><br><span style="font-size:0.78rem;color:#888;">Associate Engineer, Virtusa Consulting Services Pvt. Ltd.</span></td>
+                <td>Associate Engineer, Virtusa Consulting Services</td>
+                <td><span class="committee-badge badge--industry">Alumni &amp; Industry Expert</span></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><strong>Dr. D.B.K. Kamesh</strong><br><span style="font-size:0.78rem;color:#888;">Professor, Dept. of CSE-DS, MLRIT</span></td>
+                <td>Professor, CSE (Data Science), MLRIT</td>
+                <td><span class="committee-badge badge--academic">Internal Academic Member</span></td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><strong>Mrs. N. Thulasi Chitra</strong><br><span style="font-size:0.78rem;color:#888;">Associate Professor, CSIT, MLRIT</span></td>
+                <td>Associate Professor, CSIT, MLRIT</td>
+                <td><span class="committee-badge badge--academic">Internal Academic Member</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel-sub" id="daac-responsibilities">DAAC Responsibilities</div>
+        <ul class="achieve-list" style="max-width:780px;">
+          <li>Review and update curriculum and syllabus as per industry and academic standards.</li>
+          <li>Ensure alignment with Outcome-Based Education (OBE) — POs, PEOs, PSOs.</li>
+          <li>Guide academic planning and effective course delivery.</li>
+          <li>Promote innovative teaching-learning methodologies.</li>
+          <li>Strengthen industry interaction, MoUs, and internships.</li>
+          <li>Encourage research, publications, and innovation activities.</li>
+          <li>Monitor student performance and result analysis.</li>
+          <li>Collect and act on feedback from stakeholders (students, alumni, industry).</li>
+          <li>Recommend improvements in labs, infrastructure, and learning resources.</li>
+          <li>Support continuous improvement and accreditation (NBA/NAAC) compliance.</li>
+        </ul>
+      </div>
+
+    </div><!-- .dept-body__panels -->
+  </div><!-- .dept-body -->
+
+  <script>
+    // ── Tab Switcher ──
+    var __activeTab = 'overview';
+    (function () {
+      var tabs = document.querySelectorAll('.dept-tab');
+      var panels = document.querySelectorAll('.dept-panel');
+      if (!tabs.length || !panels.length) return;
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function (e) {
+          e.preventDefault();
+          var id = tab.getAttribute('data-tab');
+          tabs.forEach(function (t) { t.classList.remove('is-active'); });
+          panels.forEach(function (p) { p.classList.remove('is-active'); });
+          tab.classList.add('is-active');
+          var panel = document.getElementById('panel-' + id);
+          if (panel) panel.classList.add('is-active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          __activeTab = id;
+          document.querySelectorAll('.ds-item').forEach(function (item) {
+            var show = item.getAttribute('data-ds-tab') === id;
+            item.style.display = show ? 'flex' : 'none';
+            item.classList.remove('is-active');
+          });
+          var first = document.querySelector('.ds-item[data-ds-tab="' + id + '"]');
+          if (first) first.classList.add('is-active');
+        });
+      });
+    })();
+
+    // ── Syllabus Selector ──
+    (function () {
+      var syllabi = {
+        r25: {
+          1: {
+            1: ['Matrices and Calculus','Advanced Engineering Physics','Programming for Problem Solving','Basic Electrical Engineering','Computer Aided Engineering Drawing','Advanced Engineering Physics Lab','Programming for Problem Solving Lab','Basic Electrical Engineering Lab','IOT and IT Workshop'],
+            2: ['Ordinary Differential Equations and Vector Calculus','Engineering Chemistry','Data Structures','Electronic Devices and Applications','English for Skill Enhancement','Engineering Chemistry Lab','Data Structures Lab','English Language and Communication Skills Lab','Engineering Workshop','Python Programming Lab']
+          },
+          2: {
+            3: ['Mathematical and Statistical Foundations','Computer Organization and Architecture','Object Oriented Programming through Java','Software Engineering','Database Management System','Computational Mathematics Lab','OOP through Java Lab','Software Engineering Lab','DBMS Lab','Skill Development — Web Technologies'],
+            4: ['Discrete Mathematics','Operating Systems','Algorithms Design and Analysis','Computer Networks','Introduction to Data Science','Innovation and Entrepreneurship','Operating Systems Lab','Computer Networks Lab','Data Science Lab','Skill Development — Data Visualization (R / Power BI)','Indian Knowledge System']
+          },
+          3: {
+            5: ['Predictive Analytics','Data Mining','Machine Learning','Professional Elective-I','Open Elective-I','Predictive Analytics Lab','Data Mining Lab','Machine Learning Lab','Field Based Research Project','Skill Development — UI Design (Flutter / Android Studio)','Gender Sensitization Lab / Human Values and Professional Ethics'],
+            6: ['Data Stream Processing','Big Data Technologies','Business Economics and Financial Analysis','Professional Elective-II','Open Elective-II','Data Stream Processing Lab','Big Data Technologies Lab','Exploratory Data Analysis Lab','English for Employability Skills Lab','Prompt Engineering','Environmental Science']
+          },
+          4: {
+            7: ['Data Stream Mining','Web and Social Media Analytics','Fundamentals of Management','Professional Elective-III','Professional Elective-IV','Open Elective-III','Data Stream Mining Lab','Web and Social Media Analytics Lab','Industry Oriented Mini Project / Summer Internship'],
+            8: ['Professional Elective-V','Professional Elective-VI','Project Work']
+          }
+        },
+        r22: {
+          1: {
+            1: ['Linear Algebra and Calculus','Programming for Problem Solving','English for Skill Enhancement','Engineering Chemistry','Electronic Devices and Applications','Programming for Problem Solving Lab','English Language and Communication Skills Lab','Seminar','Environmental Science'],
+            2: ['Numerical Methods and Integral Transforms','Applied Physics','Basic Electrical and Electronics Engineering','Engineering Drawing','Applied Physics Lab','Python Programming Lab','Engineering Work Shop','Data Handling and Interpretation']
+          },
+          2: {
+            3: ['Discrete Mathematics','Operating Systems','Digital Electronics and Computer Organization','Database Management Systems','Data Structures','DBMS Lab','Data Structures Lab','Skill Development Course — Data Wrangling','Constitution of India'],
+            4: ['Computer Oriented Statistical Methods','Business Economics and Financial Analysis','Data Analytics using R','Object Oriented Programming through Java','Design and Analysis of Algorithms','Data Analytics using R Lab','OOP through Java Lab','Real-time Research Project / Societal Related Project','Gender Sensitization']
+          },
+          3: {
+            5: ['Big Data Technologies','Automata and Compiler Design','Web Programming','Professional Elective-I','Software Engineering','Web Programming Lab','Big Data Technologies Lab','MOOCS / Independent Study','Human Values and Professional Ethics'],
+            6: ['Stream Processing and Analytics','Computer Networks','Professional Elective-II','Professional Elective-III','Open Elective-I','Stream Processing and Analytics Lab','Professional Elective-II Lab','Industrial Oriented Mini Project','Environmental Science']
+          },
+          4: {
+            7: ['Deep Learning','Web and Social Media Analytics','Professional Elective-IV','Professional Elective-V','Open Elective-II','Deep Learning Lab','Research Project Phase-1'],
+            8: ['Organizational Behavior','Professional Elective-VI','Open Elective-III','Research Project Phase-2']
+          }
+        }
+      };
+      var pdfMap = { r25: 'syllabus/pdfs/cse-ds-r25-catalogue.pdf', r22: 'syllabus/pdfs/cse-ds-r22-catalogue.pdf' };
+
+      var regPills = document.getElementById('regPills');
+      var yearPills = document.getElementById('yearPills');
+      var semPillsRow = document.getElementById('semPills');
+      var subjectList = document.getElementById('subjectList');
+      var fullSyllabusBtn = document.getElementById('fullSyllabusBtn');
+      var currentReg = 'r25';
+      var selectedYear = null;
+
+      function buildYearPills() {
+        yearPills.innerHTML = '';
+        Object.keys(syllabi[currentReg]).forEach(function (y) {
+          var p = document.createElement('button');
+          p.className = 'pill'; p.setAttribute('data-year', y);
+          p.textContent = 'Year ' + y; yearPills.appendChild(p);
+        });
+        semPillsRow.innerHTML = ''; semPillsRow.style.display = 'none';
+        subjectList.classList.remove('is-visible'); subjectList.innerHTML = '';
+        if (fullSyllabusBtn) fullSyllabusBtn.style.display = 'none';
+        selectedYear = null;
+      }
+      buildYearPills();
+
+      regPills.addEventListener('click', function (e) {
+        var btn = e.target.closest('.pill'); if (!btn) return;
+        currentReg = btn.getAttribute('data-reg');
+        regPills.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('is-active'); });
+        btn.classList.add('is-active'); buildYearPills();
+      });
+
+      yearPills.addEventListener('click', function (e) {
+        var btn = e.target.closest('.pill'); if (!btn) return;
+        selectedYear = parseInt(btn.getAttribute('data-year'));
+        yearPills.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        semPillsRow.innerHTML = '';
+        Object.keys(syllabi[currentReg][selectedYear]).forEach(function (s) {
+          var p = document.createElement('button'); p.className = 'pill';
+          p.setAttribute('data-sem', s); p.textContent = 'Sem ' + s; semPillsRow.appendChild(p);
+        });
+        semPillsRow.style.display = 'flex';
+        subjectList.classList.remove('is-visible'); subjectList.innerHTML = '';
+        if (fullSyllabusBtn) fullSyllabusBtn.style.display = 'none';
+      });
+
+      semPillsRow.addEventListener('click', function (e) {
+        var btn = e.target.closest('.pill'); if (!btn || !selectedYear) return;
+        var sem = parseInt(btn.getAttribute('data-sem'));
+        semPillsRow.querySelectorAll('.pill').forEach(function (p) { p.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        var subjects = syllabi[currentReg][selectedYear][sem]; if (!subjects) return;
+        var html = '';
+        subjects.forEach(function (name, i) {
+          html += '<div class="subject-row"><span class="subject-num">' + (i+1) + '.</span><span class="subject-name">' + name + '</span></div>';
+        });
+        subjectList.innerHTML = html;
+        subjectList.classList.remove('is-visible'); void subjectList.offsetWidth; subjectList.classList.add('is-visible');
+        if (fullSyllabusBtn) {
+          fullSyllabusBtn.innerHTML = '<a href="' + pdfMap[currentReg] + '" target="_blank" class="full-syllabus-btn">Download Full ' + currentReg.toUpperCase() + ' Syllabus &rarr;</a>';
+          fullSyllabusBtn.style.display = 'block';
+        }
+      });
+    })();
+
+    // ── Accordion ──
+    (function(){
+      document.querySelectorAll('.sub-accordion__header').forEach(function(header){
+        header.addEventListener('click', function(){
+          header.closest('.sub-accordion').classList.toggle('is-open');
+        });
+      });
+    })();
+
+    // ── Dark sidebar nav ──
+    (function(){
+      var streak = document.getElementById('navStreak');
+      function fireStreak() {
+        if (!streak) return;
+        streak.classList.remove('is-firing'); void streak.offsetWidth; streak.classList.add('is-firing');
+        setTimeout(function(){ streak.classList.remove('is-firing'); }, 600);
+      }
+
+      document.querySelectorAll('.ds-item').forEach(function(item){
+        item.addEventListener('click', function(e){
+          var target = item.getAttribute('data-ds-target');
+          var el = document.getElementById(target);
+          if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); fireStreak(); }
+          document.querySelectorAll('.ds-item').forEach(function(i){ i.classList.remove('is-active'); });
+          item.classList.add('is-active');
+        });
+      });
+
+      // Scroll-based active tracking via IntersectionObserver
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var id = entry.target.id;
+            var match = document.querySelector('.ds-item[data-ds-target="' + id + '"]');
+            if (match && match.style.display !== 'none') {
+              document.querySelectorAll('.ds-item').forEach(function(i){ i.classList.remove('is-active'); });
+              match.classList.add('is-active');
+            }
+          }
+        });
+      }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+
+      document.querySelectorAll('.ds-item').forEach(function(item){
+        var targetId = item.getAttribute('data-ds-target');
+        if (targetId) {
+          var el = document.getElementById(targetId);
+          if (el) observer.observe(el);
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
